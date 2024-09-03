@@ -6,6 +6,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export enum ProductStatus {
+  AVAILABLE = 1,
+  OUT_OF_STOCK = 2,
+  DISCONTINUED = 3,
+}
+
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn('uuid')
@@ -49,6 +55,12 @@ export class Product {
 
   @Column('text')
   gender: string;
+
+  @Column({
+    type: 'int',
+    default: ProductStatus.AVAILABLE, // Match the default value from migration
+  })
+  status: ProductStatus;
 
   @BeforeInsert()
   @BeforeUpdate()
