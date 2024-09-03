@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  #########################################
+  #   Setup Database container
+  #########################################
+  database:
+    container_name: teslo-shop-database-dev
+    image: postgres:14.3
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}"
+    volumes:
+      - teslo-shop-dev-db:/var/lib/postgresql/data
+    networks:
+      - teslo-shop-network-dev
+  #########################################
+  #   Setup Backend container
+  #########################################
+  backend:
+    depends_on:
+      - database
+    container_name: teslo-shop-backend-dev
+    image: ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_BACKEND_IMAGE}:dev
+    build:
+      context: ./
+      target: development
+    environment:
+      - BACKEND_CONTAINER_PORT=${BACKEND_CONTAINER_PORT}
+      - POSTGRES_CONTAINER_PORT=${POSTGRES_CONTAINER_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+    command: npm run start:dev
+    networks:
+      - teslo-shop-network-dev
+volumes:
+  teslo-shop-dev-db:
+networks:
+  teslo-shop-network-dev:
