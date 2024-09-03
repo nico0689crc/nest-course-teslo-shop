@@ -17,7 +17,6 @@ const options = {
   password: process.env.POSTGRES_PASSWORD || 'your_password',
   database: process.env.POSTGRES_DB || 'your_database',
   entities: [__dirname + '/../../src/**/*.entity.ts'],
-  migrationsTableName: 'migrations',
   migrations: [__dirname + '/../migrations/**/*.ts'],
   seeds: [InitSeeder],
 };
@@ -25,3 +24,5 @@ const options = {
 export const source = new DataSource(
   options as DataSourceOptions & SeederOptions,
 );
+// npm run mig-cre --name=create-table-products
+// npm run typeorm migration:generate -d ./database/config/typeorm.config.ts database/migrations/create-product-table

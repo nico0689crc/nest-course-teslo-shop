@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   #########################################
   #   Setup Database container
@@ -41,7 +40,6 @@ services:
         source: ./
         target: /app
       - /app/node_modules
-    command: npm run start:dev
     networks:
       - teslo-shop-network-dev
 volumes:

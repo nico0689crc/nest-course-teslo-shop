@@ -7,8 +7,17 @@ export default class ProductSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
   ): Promise<any> {
-    const productFactory = factoryManager.get(Product);
+    const productRepository = dataSource.getRepository(Product);
 
-    await productFactory.saveMany(1000);
+    // Check if there are any existing records
+    const count = await productRepository.count();
+
+    if (count === 0) {
+      const productFactory = factoryManager.get(Product);
+      await productFactory.saveMany(1000);
+      console.log('Seeded 1000 products.');
+    } else {
+      console.log(`Skipped seeding products. ${count} products already exist.`);
+    }
   }
 }

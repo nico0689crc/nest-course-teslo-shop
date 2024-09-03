@@ -24,6 +24,16 @@ RUN npm ci --legacy-peer-deps
 
 COPY --chown=node:node . .
 
+# Copy the entrypoint script to a directory owned by the node user
+COPY --chown=node:node ./docker-entrypoint.sh /app/
+
+# Make the entrypoint script executable
+RUN chmod +x /app/docker-entrypoint.sh
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+
+# CMD ["npm", "run", "start:dev"]
+
 #########################################
 #   BUILD STAGE
 #########################################

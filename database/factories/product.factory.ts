@@ -4,7 +4,7 @@ import { setSeederFactory } from 'typeorm-extension';
 export default setSeederFactory(Product, async (faker) => {
   const product = new Product();
 
-  product.title = `${faker.commerce.product()} ${faker.lorem.words({ min: 1, max: 10 })}`;
+  product.title = faker.lorem.words({ min: 5, max: 15 });
   product.price = +faker.commerce.price({ dec: 2, min: 1, max: 500000 });
   product.stock = +faker.number.int({ min: 0, max: 1000 });
   product.description = faker.commerce.productDescription();

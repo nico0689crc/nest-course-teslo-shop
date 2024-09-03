@@ -15,7 +15,7 @@ import { ProductsModule } from './products/products.module';
       password: process.env.POSTGRES_PASSWORD || 'your_password',
       database: process.env.POSTGRES_DB || 'your_database',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     ProductsModule,
     CommonModule,
