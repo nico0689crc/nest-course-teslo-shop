@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommonModule } from './common/common.module';
 import { ProductsModule } from './products/products.module';
 
 @Module({
@@ -13,11 +14,11 @@ import { ProductsModule } from './products/products.module';
       username: process.env.POSTGRES_USER || 'your_username',
       password: process.env.POSTGRES_PASSWORD || 'your_password',
       database: process.env.POSTGRES_DB || 'your_database',
-      // entities: [__dirname + '/../**/*.entity.{ts,js}'],
       autoLoadEntities: true,
       synchronize: true,
     }),
     ProductsModule,
+    CommonModule,
   ],
 })
 export class AppModule {}
