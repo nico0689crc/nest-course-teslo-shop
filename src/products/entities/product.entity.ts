@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ProductImage } from './product-image.entity';
 
 export enum ProductStatus {
   AVAILABLE = 1,
@@ -73,6 +75,9 @@ export class Product {
   checkSlugInsert() {
     this.slug = this.convertToSlug(this.slug ?? this.title);
   }
+
+  @OneToMany(() => ProductImage, (productImage) => productImage.product)
+  images: ProductImage[];
 
   private convertToSlug(text: string) {
     return text

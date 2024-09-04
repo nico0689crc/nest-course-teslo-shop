@@ -40,6 +40,7 @@ export class ProductsService {
     const [result, total] = await this.productRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
+      relations: ['images'],
     });
 
     return {
