@@ -58,9 +58,15 @@ export class Product {
 
   @Column({
     type: 'int',
-    default: ProductStatus.AVAILABLE, // Match the default value from migration
+    default: ProductStatus.AVAILABLE,
   })
   status: ProductStatus;
+
+  @Column({
+    type: 'text',
+    array: true,
+  })
+  tags: string[];
 
   @BeforeInsert()
   @BeforeUpdate()
