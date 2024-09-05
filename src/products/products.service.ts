@@ -57,9 +57,8 @@ export class ProductsService {
   }
 
   async update(search_param: string, updateProductDto: UpdateProductDto) {
+    const product = await this.getProduct(search_param);
     try {
-      const product = await this.getProduct(search_param);
-
       const updatedProduct = this.productRepository.merge(
         product,
         updateProductDto,
@@ -94,6 +93,7 @@ export class ProductsService {
       where: isUUID(search_param, 4)
         ? { id: search_param }
         : { slug: search_param },
+      relations: ['images'],
     });
 
     if (!product) {

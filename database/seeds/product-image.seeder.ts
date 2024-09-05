@@ -7,23 +7,22 @@ export default class ProductImageSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
   ): Promise<void> {
-    const productRepository = dataSource.getRepository(Product);
-    const products = await productRepository.find();
+    const productImageRepository = dataSource.getRepository(ProductImage);
+    const productImagesCount = await productImageRepository.count();
 
-    const productImageFactory = factoryManager.get(ProductImage);
+    if (productImagesCount === 0) {
+      const productRepository = dataSource.getRepository(Product);
+      const products = await productRepository.find();
 
-    const imagePromises = products.map(async (product) => {
-      const numberOfImages = Math.floor(Math.random() * 6);
+      const productImageFactory = factoryManager.get(ProductImage);
 
-      await productImageFactory.saveMany(numberOfImages, { product });
+      const imagePromises = products.map(async (product) => {
+        const numberOfImages = Math.floor(Math.random() * 6);
 
-      console.log(
-        `Seeded ${numberOfImages} images for product ${product.title}.`,
-      );
-    });
+        await productImageFactory.saveMany(numberOfImages, { product });
+      });
 
-    await Promise.all(imagePromises);
-
-    console.log('Finished seeding product images.');
+      await Promise.all(imagePromises);
+    }
   }
 }

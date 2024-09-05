@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsIn,
@@ -6,8 +7,16 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUrl,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+
+export class CreateProductImageDto {
+  @IsString()
+  @IsUrl()
+  url: string;
+}
 
 export class CreateProductDto {
   @IsString()
@@ -44,4 +53,9 @@ export class CreateProductDto {
   @IsArray()
   @IsOptional()
   tags: string[];
+
+  @ValidateNested()
+  @Type(() => CreateProductImageDto)
+  @IsOptional()
+  images?: CreateProductImageDto[];
 }

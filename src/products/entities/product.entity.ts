@@ -1,8 +1,10 @@
+import { User } from 'src/auth/entities/user.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -76,8 +78,16 @@ export class Product {
     this.slug = this.convertToSlug(this.slug ?? this.title);
   }
 
-  @OneToMany(() => ProductImage, (productImage) => productImage.product)
-  images: ProductImage[];
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+  })
+  images?: ProductImage[];
+
+  @ManyToOne(() => User, (user) => user.products, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  user: User;
 
   private convertToSlug(text: string) {
     return text
