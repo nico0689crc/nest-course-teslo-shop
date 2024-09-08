@@ -9,7 +9,7 @@ export async function hash(rawData: string) {
 }
 
 export async function compareHash(rawData: string, hashedData: string) {
-  return bcrypt.compare(rawData, hashedData);
+  return await bcrypt.compare(rawData, hashedData);
 }
 
 export const generateUUID = () => faker.string.uuid();

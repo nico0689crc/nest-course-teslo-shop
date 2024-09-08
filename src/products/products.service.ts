@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
+import { User } from 'src/auth/entities/user.entity';
 import { PaginationQueryDto } from 'src/common/dtos/pagination-query.dto';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -22,9 +23,12 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, user: User) {
     try {
-      const product = this.productRepository.create(createProductDto);
+      const product = this.productRepository.create({
+        ...createProductDto,
+        user,
+      });
 
       await this.productRepository.save(product);
 
@@ -38,9 +42,9 @@ export class ProductsService {
     const { page, limit } = paginationQuery;
 
     const [result, total] = await this.productRepository.findAndCount({
+      // where: { user: { id: user.id } },
       skip: (page - 1) * limit,
       take: limit,
-      relations: ['images'],
     });
 
     return {
